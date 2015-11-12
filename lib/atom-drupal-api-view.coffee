@@ -5,6 +5,8 @@
 module.exports =
 class AtomDrupalApiView extends SelectListView
   maxItems = 20
+  oldQuery = false
+
   # Returns an object that can be retrieved when package is activated
   serialize: ->
 
@@ -14,14 +16,16 @@ class AtomDrupalApiView extends SelectListView
     @setItems([])
 
   populateList: ->
-    @alternatPopulateList()
-    super
+    filterQuery = @getFilterQuery()
+    if filterQuery != '' && filterQuery != @oldQuery
+      @alternatPopulateList()
+      super
+
 
   alternatPopulateList: ->
     $this = @
     @list.empty()
-
-    filterQuery = @getFilterQuery()
+    filterQuery =  @oldQuery  = @getFilterQuery()
     $.get('https://api.drupal.org/api/suggest/' + filterQuery,(data) ->
       $this.setItems data[1]
       filteredItems = data[1]
@@ -32,7 +36,6 @@ class AtomDrupalApiView extends SelectListView
           itemView.data('select-list-item', item)
           $this.list.append(itemView)
 
-        $this.selectItemView($this.list.find('li:first'))
       else
         $this.setError(
           $this.getEmptyMessage(@items.length, filteredItems.length))
