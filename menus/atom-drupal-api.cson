@@ -1,0 +1,22 @@
+# See https://atom.io/docs/latest/hacking-atom-package-word-count#menus for more details
+'context-menu':
+  'atom-text-editor': [
+    {
+      'label': 'Toggle atom-drupal-api'
+      'command': 'atom-drupal-api:toggle'
+    }
+  ]
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      'label': 'atom-drupal-api'
+      'submenu': [
+        {
+          'label': 'Toggle'
+          'command': 'atom-drupal-api:toggle'
+        }
+      ]
+    ]
+  }
+]
