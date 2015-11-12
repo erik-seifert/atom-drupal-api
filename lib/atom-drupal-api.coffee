@@ -7,7 +7,7 @@ module.exports = AtomDrupalApi =
   subscriptions: null
 
   activate: (state) ->
-    @atomDrupalApiView = new AtomDrupalApiView(state.atomDrupalApiViewState)
+    @atomDrupalApiView = new AtomDrupalApiView(state.atomDrupalApiViewState, @)
     @modalPanel = atom.workspace.addModalPanel(item: @atomDrupalApiView.getElement(), visible: false)
 
     # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
@@ -25,8 +25,7 @@ module.exports = AtomDrupalApi =
     atomDrupalApiViewState: @atomDrupalApiView.serialize()
 
   toggle: ->
-    console.log 'AtomDrupalApi was toggled!'
-
+    
     if @modalPanel.isVisible()
       @modalPanel.hide()
     else

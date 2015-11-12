@@ -1,55 +1,62 @@
 {Range, CompositeDisposable}  = require 'atom'
 {$, $$, SelectListView} = require 'atom-space-pen-views'
 {$, View} = require 'space-pen'
+DocView = require './atom-drupal-api-doc-view'
 
 module.exports =
 class AtomDrupalApiView extends SelectListView
-  maxItems = 20
-  oldQuery = false
+
+  maxItems : 20
+  oldQuery : false
+  view : false
+  isLoading : false
+  inputThrottle : 1000
+  parent : null
 
   # Returns an object that can be retrieved when package is activated
   serialize: ->
 
-  initialize: ->
+  initialize: (state,parent) ->
     super
     @subscriptions = new CompositeDisposable
     @setItems([])
+    @focusFilterEditor()
+    inputThrottle = 1000
+    @parent = parent
 
-  populateList: ->
-    filterQuery = @getFilterQuery()
-    if filterQuery != '' && filterQuery != @oldQuery
-      @alternatPopulateList()
-      super
-
-
-  alternatPopulateList: ->
+  populateLoadingList: ->
     $this = @
+    filterQuery = @getFilterQuery()
     @list.empty()
-    filterQuery =  @oldQuery  = @getFilterQuery()
+    @setItems()
+
+    @isLoading = true
     $.get('https://api.drupal.org/api/suggest/' + filterQuery,(data) ->
+
       $this.setItems data[1]
-      filteredItems = data[1]
-
-      if filteredItems.length
-        filteredItems.forEach (item) ->
-          itemView = $($this.viewForItem(item))
-          itemView.data('select-list-item', item)
-          $this.list.append(itemView)
-
-      else
-        $this.setError(
-          $this.getEmptyMessage(@items.length, filteredItems.length))
+      $this.populateList()
+      $this.isLoading = false
     )
 
-  confirmSelection: ->
-    item = @getSelectedItem()
-    console.log item
+  checkLoading: ->
+    @isLoading
+
+  schedulePopulateList: ->
+    clearTimeout(@scheduleTimeout)
+    populateCallback = =>
+      @populateLoadingList() if @isOnDom() && !@checkLoading()
+    @scheduleTimeout = setTimeout(populateCallback,  @inputThrottle)
 
   viewForItem: (item) ->
-    "<li>#{item}</li>"
+    $("<li>#{item}</li>")
 
   confirmed: (item) ->
-    console.log("#{item} was selected")
+    if @view
+      view.remove()
+
+    view = new DocView
+    view.setKeyword item
+    @parent.toggle()
 
   # Tear down any state and detach
   destroy: ->
