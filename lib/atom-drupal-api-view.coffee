@@ -52,10 +52,10 @@ class AtomDrupalApiView extends SelectListView
 
   confirmed: (item) ->
     if @view
-      view.remove()
+      @view.destroy()
+      @view = null
 
-    view = new DocView
-    view.setKeyword item
+    @view = new DocView(item)
     @parent.toggle()
 
   # Tear down any state and detach
