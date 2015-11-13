@@ -1,6 +1,6 @@
 {Range, CompositeDisposable}  = require 'atom'
 {$, $$, ScrollView} = require 'atom-space-pen-views'
-{$, View} = require 'space-pen'
+{View} = require 'space-pen'
 
 module.exports =
 class AtomDrupalApiDocView extends ScrollView
@@ -14,6 +14,9 @@ class AtomDrupalApiDocView extends ScrollView
 
   @content: ->
     @div id: 'doc-view', =>
+      @button('close api'
+        id: 'doc-view-close',
+      )
       @tag( 'webview'
         id: 'doc-view-frame',
         tabindex: -1,
@@ -22,6 +25,12 @@ class AtomDrupalApiDocView extends ScrollView
   attached: ->
     @webview = @element.querySelector('webview')
     @webview.src = 'https://api.drupal.org/apis/' + @item
+    $this = @
+    element = @element.querySelector('button')
+    destroyCallback = =>
+      $this.destroy()
+
+    $(element).on 'click', destroyCallback
 
   destroy: ->
     @element.remove()
