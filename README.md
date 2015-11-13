@@ -1,5 +1,5 @@
 # atom-drupal-api package
 
-A short description of your package.
+Integration of http://api.drupal.org 
 
-![A screenshot of your package](https://f.cloud.github.com/assets/69169/2290250/c35d867a-a017-11e3-86be-cd7c5bf3ff9b.gif)
+press `ctrl + alt +s` for search or submit selected text 
