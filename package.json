@@ -1,13 +1,13 @@
 {
   "name": "atom-drupal-api",
   "main": "./lib/atom-drupal-api",
-  "version": "0.0.0",
-  "description": "A short description of your package",
+  "version": "1.0.0",
+  "description": "Add integration for drupal api docs",
   "keywords": [],
   "activationCommands": {
     "atom-workspace": "atom-drupal-api:toggle"
   },
-  "repository": "https://github.com/atom/atom-drupal-api",
+  "repository": "https://github.com/b-connect/atom-drupal-api",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
