@@ -5,7 +5,7 @@
   "description": "Add integration for drupal api docs",
   "keywords": [],
   "activationCommands": {
-    "atom-workspace": "atom-drupal-api:toggle"
+    "atom-workspace":  ["atom-drupal-api:toggle","atom-drupal-api:select"]
   },
   "repository": "https://github.com/b-connect/atom-drupal-api",
   "license": "MIT",

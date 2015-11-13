@@ -41,6 +41,13 @@ class AtomDrupalApiView extends SelectListView
   checkLoading: ->
     @isLoading
 
+  setSelection:(text) ->
+    if @view
+      @view.destroy()
+      @view = null
+
+    @view = new DocView(text)
+
   schedulePopulateList: ->
     clearTimeout(@scheduleTimeout)
     populateCallback = =>
